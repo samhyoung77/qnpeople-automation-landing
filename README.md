@@ -13,7 +13,7 @@ Appium과 Google Workspace를 활용한 자동화 구축 레퍼런스(Reference)
 
 ### 🌐 Live Demo
 
-- **웹사이트**: [GitHub Pages URL이 생성되면 추가됩니다]
+- **웹사이트**: [https://samhyoung77.github.io/qnpeople-automation-landing/](https://samhyoung77.github.io/qnpeople-automation-landing/)
 - **실시간 대시보드**: [Looker Studio Dashboard](https://lookerstudio.google.com/reporting/e7857c86-ded6-46f7-91d7-417c3cb0c450)
 - **테스트 스크립트**: [GitHub Repository](https://github.com/samhyoung77/test_scripts/tree/main)
 - **테스트 데이터**: [Google Sheets](https://docs.google.com/spreadsheets/d/1M4512WY_ZctjJo200OdwCty6k-ObDxvxRQTHp2hdWkA/edit?usp=sharing)
