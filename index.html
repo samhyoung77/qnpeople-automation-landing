@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="라이선스 비용 없는 엔터프라이즈급 품질 관리, Open Source 기반 모바일 자동화 솔루션">
+    <meta name="theme-color" content="#f97316">
+    <title>Open Source QA Automation | Q&People</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Enhanced Dark Theme Colors */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #0f1419;
+            --bg-tertiary: #1a1f2e;
+            --bg-card: rgba(31, 41, 55, 0.4);
+            --bg-card-hover: rgba(31, 41, 55, 0.7);
+
+            /* Premium Accent Colors */
+            --orange: #f97316;
+            --orange-light: #fb923c;
+            --orange-dark: #ea580c;
+            --orange-glow: rgba(249, 115, 22, 0.5);
+            --teal: #14b8a6;
+            --teal-light: #5eead4;
+            --teal-dark: #0d9488;
+            --teal-glow: rgba(20, 184, 166, 0.5);
+            --blue: #3b82f6;
+            --blue-light: #60a5fa;
+            --blue-dark: #2563eb;
+            --blue-glow: rgba(59, 130, 246, 0.5);
+            --purple: #a855f7;
+            --purple-glow: rgba(168, 85, 247, 0.5);
+
+            /* Enhanced Text Colors */
+            --text-primary: #ffffff;
+            --text-secondary: #e5e7eb;
+            --text-muted: #9ca3af;
+            --text-dark: #6b7280;
+
+            /* Border & Shadow */
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-color-light: rgba(255, 255, 255, 0.15);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Scroll Progress Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--orange), var(--teal), var(--blue));
+            z-index: 10000;
+            transition: width 0.1s ease;
+        }
+
+        /* Enhanced Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(25px) saturate(180%);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: var(--shadow-md);
+            border-bottom-color: var(--border-color-light);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-image {
+            height: 48px;
+            width: auto;
+            filter: drop-shadow(0 0 10px var(--orange-glow));
+        }
+
+        .logo-fallback {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #F68D3E, #F97316);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(246, 141, 62, 0.4);
+            position: relative;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .logo-fallback:hover {
+            transform: scale(1.05) rotate(-5deg);
+            box-shadow: 0 6px 25px rgba(246, 141, 62, 0.6);
+        }
+
+        .logo-text {
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--orange), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--orange), var(--teal));
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-links a:hover {
+            color: var(--orange);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Enhanced Hero Section */
+        .hero {
+            margin-top: 80px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 30%, #16213e 60%, #0f3460 100%);
+            padding: 8rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 15% 30%, var(--orange-glow) 0%, transparent 40%),
+                radial-gradient(circle at 85% 70%, var(--teal-glow) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, var(--blue-glow) 0%, transparent 60%);
+            opacity: 0.4;
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px);
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(249, 115, 22, 0.15);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 50px;
+            color: var(--orange-light);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.15;
+            letter-spacing: -1.5px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            word-break: keep-all;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--orange), var(--orange-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 1.8vw, 1.35rem);
+            margin-bottom: 3rem;
+            color: var(--text-secondary);
+            line-height: 1.9;
+            font-weight: 400;
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1.15rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            color: white;
+            box-shadow: 0 4px 25px var(--orange-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 35px var(--orange-glow);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px) scale(1);
+        }
+
+        .btn-secondary {
+            background: rgba(20, 184, 166, 0.1);
+            color: var(--teal-light);
+            border: 2px solid var(--teal);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 25px var(--teal-glow);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+            color: white;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 35px var(--teal-glow);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(-1px) scale(1);
+        }
+
+        /* Enhanced Section Styles */
+        section {
+            padding: 7rem 2rem;
+            position: relative;
+        }
+
+        section:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        section:nth-child(odd) {
+            background: var(--bg-primary);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.25rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--teal) 50%, var(--blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            margin-bottom: 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Enhanced Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--orange), var(--teal), var(--blue));
+            background-size: 200% auto;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+            animation: shimmer 2s linear infinite;
+        }
+
+        .feature-card:hover::after {
+            opacity: 0.3;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: var(--bg-card-hover);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            border-color: var(--border-color-light);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            filter: drop-shadow(0 0 15px var(--orange-glow));
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotateY(10deg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.9;
+            font-size: 1.05rem;
+        }
+
+        /* Enhanced Workflow Section */
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .workflow-step {
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .workflow-step::after {
+            content: '→';
+            position: absolute;
+            right: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            color: var(--teal);
+            font-weight: 700;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .workflow-step:last-child::after {
+            display: none;
+        }
+
+        .workflow-step:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 0 40px var(--teal-glow);
+            border-color: var(--teal);
+        }
+
+        .workflow-step:hover::after {
+            opacity: 1;
+            right: -2.5rem;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--teal), var(--blue));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 900;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 0 25px var(--teal-glow);
+            transition: all 0.4s ease;
+        }
+
+        .workflow-step:hover .step-number {
+            transform: rotateY(360deg) scale(1.1);
+            box-shadow: 0 0 35px var(--teal-glow);
+        }
+
+        .workflow-step h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .workflow-step .tool {
+            color: var(--orange-light);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-size: 1.05rem;
+        }
+
+        .workflow-step p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Enhanced Demo Cards */
+        .demo-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .demo-card {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(234, 88, 12, 0.08));
+            backdrop-filter: blur(15px);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 320px;
+        }
+
+        .demo-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .demo-card:hover::before {
+            opacity: 0.4;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .demo-card:nth-child(2) {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(13, 148, 136, 0.08));
+            border-color: rgba(20, 184, 166, 0.3);
+        }
+
+        .demo-card:nth-child(2)::before {
+            background: radial-gradient(circle, var(--teal-glow) 0%, transparent 70%);
+        }
+
+        .demo-card:nth-child(3) {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.08));
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .demo-card:nth-child(3)::before {
+            background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+        }
+
+        .demo-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7);
+        }
+
+        .demo-card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .demo-card p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.9;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+        }
+
+        .demo-card .btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .demo-card .btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Enhanced Stats Section */
+        .stats {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f3460 100%);
+            position: relative;
+        }
+
+        .stats::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 25% 40%, var(--orange-glow) 0%, transparent 50%),
+                radial-gradient(circle at 75% 60%, var(--teal-glow) 0%, transparent 50%);
+            opacity: 0.3;
+            animation: pulseGlow 10s ease-in-out infinite;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--teal), var(--blue));
+            transform: scaleX(0);
+            transition: transform 0.5s ease;
+        }
+
+        .stat-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 0 40px var(--teal-glow);
+            border-color: var(--teal);
+        }
+
+        .stat-number {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--teal-light), var(--blue-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            white-space: nowrap;
+        }
+
+        .stat-label {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Enhanced Roadmap Section */
+        .roadmap-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .roadmap-item {
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--teal);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .roadmap-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 0;
+            background: linear-gradient(180deg, var(--teal), var(--blue));
+            transition: height 0.5s ease;
+        }
+
+        .roadmap-item:hover::before {
+            height: 100%;
+        }
+
+        .roadmap-item:hover {
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 0 40px var(--teal-glow);
+            border-left-color: var(--teal-light);
+        }
+
+        .roadmap-item h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .roadmap-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .roadmap-item li {
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            line-height: 1.8;
+            transition: all 0.3s ease;
+        }
+
+        .roadmap-item li:hover {
+            color: var(--text-primary);
+            transform: translateX(5px);
+        }
+
+        .roadmap-item li::before {
+            content: '✓';
+            color: var(--teal-light);
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+            filter: drop-shadow(0 0 8px var(--teal-glow));
+        }
+
+        /* Enhanced Footer */
+        footer {
+            background: var(--bg-primary);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-info {
+            margin-bottom: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .footer-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .footer-image:hover {
+            transform: scale(1.02);
+        }
+
+        .footer-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--orange), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-info p {
+            color: var(--text-muted);
+            margin: 0.5rem 0;
+            font-size: 1.05rem;
+        }
+
+        .footer-bottom {
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Scroll to Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--orange), var(--teal));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 999;
+            box-shadow: 0 4px 20px var(--orange-glow);
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 30px var(--orange-glow);
+        }
+
+        .scroll-to-top::after {
+            content: '↑';
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .workflow-step::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: rgba(15, 20, 25, 0.98);
+                backdrop-filter: blur(25px);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                border-left: 1px solid var(--border-color);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .hero {
+                padding: 5rem 1.5rem;
+                min-height: auto;
+            }
+
+            .logo-text {
+                display: none;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .features-grid,
+            .demo-cards,
+            .roadmap-items {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .workflow-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .footer-info {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-image {
+                max-width: 100%;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--orange);
+            color: white;
+        }
+
+        ::-moz-selection {
+            background: var(--orange);
+            color: white;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--orange), var(--teal));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--orange-light), var(--teal-light));
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <div class="logo-container" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <div class="logo-fallback" id="logoFallback">Q</div>
+                <img src="qnpeople_logo.png" alt="Q&People Logo" class="logo-image" id="logoImage" style="display: none;" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+                <div class="logo-text">Automation</div>
+            </div>
+            <div class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#workflow">Workflow</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content fade-in-up">
+            <div class="hero-badge">
+                <span>🚀</span>
+                <span>100% Open Source Solution</span>
+            </div>
+            <h1>라이선스 비용 없는<br>엔터프라이즈급 품질 관리</h1>
+            <h2>Open Source 기반 모바일 자동화 솔루션</h2>
+            <p class="subtitle">
+                Appium과 Google Workspace를 활용한 <strong>자동화 구축 레퍼런스(Reference)</strong>입니다.<br>
+                <strong>고객사의 서비스 환경에 맞는 맞춤형 자동화 시스템</strong>을 설계해 드립니다.
+            </p>
+            <div class="cta-buttons">
+                <a href="https://github.com/samhyoung77/test_scripts/tree/main" target="_blank" class="btn btn-primary">
+                    <span>🚀</span>
+                    <span>GitHub 저장소 방문하기</span>
+                </a>
+                <a href="https://lookerstudio.google.com/reporting/e7857c86-ded6-46f7-91d7-417c3cb0c450" target="_blank" class="btn btn-secondary">
+                    <span>📊</span>
+                    <span>실시간 대시보드 보기</span>
+                </a>
+                <a href="mailto:shcho@qnpeople.com" class="btn btn-primary" style="background: linear-gradient(135deg, var(--teal), var(--teal-dark)); box-shadow: 0 4px 25px var(--teal-glow);">
+                    <span>✉️</span>
+                    <span>자동화 구축 문의하기</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <div class="container">
+            <h2 class="section-title reveal">반복적인 수동 테스트,<br>이제 데이터 기반 자동화로 전환하세요</h2>
+            <p class="section-subtitle reveal">
+                고가의 상용 자동화 도구가 주는 비용 부담과 복잡성을 제거했습니다.<br>
+                오픈 소스 기술만을 활용하여 가장 합리적이고 효율적인 <strong>Cost-Effective Automation Ecosystem</strong>을 구축했습니다.
+            </p>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">💰</div>
+                    <h3>Cost Reduction</h3>
+                    <p>
+                        상용 라이선스 비용 <strong>Zero</strong>.<br>
+                        순수 오픈 소스와 무료 클라우드 도구만을 활용하여 100% 비용 절감을 실현했습니다.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Efficiency</h3>
+                    <p>
+                        자사 PoC기준, 수동 대비 <strong>최대 70% 시간 단축</strong>.<br>
+                        단순 반복 수행은 자동화에 맡기고, QA 팀은 더 가치 있는 탐색적 테스트에 집중하세요.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">📈</div>
+                    <h3>Data-Driven</h3>
+                    <p>
+                        막연한 '감'이 아닌, 로그와 통계 데이터에 기반한 정확한 품질 관리.<br>
+                        실시간 분석으로 문제를 즉시 파악합니다.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🛠️</div>
+                    <h3>Custom Scripting</h3>
+                    <p>
+                        고객사의 앱 특성에 맞춰 <strong>맞춤형 테스트 시나리오</strong>를 제작합니다.<br>
+                        단순 기능 검증부터 복잡한 사용자 시나리오까지, 필요한 모든 영역을 자동화해 드립니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="workflow">
+        <div class="container">
+            <h2 class="section-title reveal">Execution부터 Visualization까지,<br>끊김 없는 워크플로우</h2>
+            <p class="section-subtitle reveal">
+                테스트 실행 즉시 결과가 클라우드로 전송되고, 분석되어 리포트로 발행되는<br>
+                <strong>완전 자동화된 파이프라인</strong>을 갖추고 있습니다.
+            </p>
+            <div class="workflow-steps">
+                <div class="workflow-step reveal">
+                    <div class="step-number">1</div>
+                    <h3>⚙️ Execution</h3>
+                    <div class="tool">Windows & Mac & Linux</div>
+                    <p>다양한 OS 환경에서 테스트 스크립트 실행 및 디바이스 제어</p>
+                </div>
+                <div class="workflow-step reveal">
+                    <div class="step-number">2</div>
+                    <h3>📱 Target</h3>
+                    <div class="tool">Android & iOS & Web</div>
+                    <p>실제 디바이스에서 앱 or 웹 동작 검증</p>
+                </div>
+                <div class="workflow-step reveal">
+                    <div class="step-number">3</div>
+                    <h3>💾 Storage</h3>
+                    <div class="tool">Google Sheets</div>
+                    <p>테스트 결과, 에러 로그, 수행 시간 자동 적재</p>
+                </div>
+                <div class="workflow-step reveal">
+                    <div class="step-number">4</div>
+                    <h3>🔄 Processing</h3>
+                    <div class="tool">Apps Script</div>
+                    <p>데이터 트리거 감지, 결과 요약 가공, 알림 로직 수행</p>
+                </div>
+                <div class="workflow-step reveal">
+                    <div class="step-number">5</div>
+                    <h3>📊 Visualization</h3>
+                    <div class="tool">Looker Studio</div>
+                    <p>실시간 웹 대시보드 시각화 및 Daily 이메일 리포트</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section id="demo">
+        <div class="container">
+            <h2 class="section-title reveal">구축 사례: 카메라 앱 기능 검증</h2>
+            <p class="section-subtitle reveal">
+                실제 카메라 앱을 대상으로 구축된 <strong>PoC(Proof of Concept) 모델</strong>입니다.<br>
+                고객사의 앱에서도 이와 같은 데이터 분석과 리포팅 시스템을 구현할 수 있습니다.
+            </p>
+            <div class="demo-cards">
+                <div class="demo-card reveal">
+                    <h3>💻 Script Repository</h3>
+                    <p>Python 기반의 모듈화된 테스트 스크립트 구조를 확인하고, 실제 코드 레벨에서 어떻게 자동화가 구현되었는지 살펴보세요.</p>
+                    <a href="https://github.com/samhyoung77/test_scripts/tree/main" target="_blank" class="btn">
+                        GitHub 바로가기 →
+                    </a>
+                </div>
+                <div class="demo-card reveal">
+                    <h3>📝 Test Database</h3>
+                    <p>실시간으로 적재되는 테스트 로그와 시나리오(TC) 관리 현황을 Google Sheets에서 직접 확인할 수 있습니다.</p>
+                    <a href="https://docs.google.com/spreadsheets/d/1M4512WY_ZctjJo200OdwCty6k-ObDxvxRQTHp2hdWkA/edit?usp=sharing" target="_blank" class="btn">
+                        Google Sheet 확인하기 →
+                    </a>
+                </div>
+                <div class="demo-card reveal">
+                    <h3>📉 Analytics Dashboard</h3>
+                    <p>테스트 성공률, 수행 시간, 에러 유형별 통계를 시각화한 인터랙티브 대시보드를 체험하세요.</p>
+                    <a href="https://lookerstudio.google.com/reporting/e7857c86-ded6-46f7-91d7-417c3cb0c450" target="_blank" class="btn">
+                        대시보드 체험하기 →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <h2 class="section-title reveal" style="color: var(--text-primary); background: linear-gradient(135deg, var(--teal-light), var(--blue-light)); -webkit-background-clip: text; background-clip: text;">현재 운영 중인 시스템 지표</h2>
+            <div class="stats-grid">
+                <div class="stat-item reveal">
+                    <div class="stat-number">54.4%</div>
+                    <div class="stat-label">테스트 성공률<br>(지속 개선 중)</div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-number">80-140초</div>
+                    <div class="stat-label">테스트 1회<br>소요 시간</div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">라이선스 비용<br>절감</div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">실시간<br>모니터링</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Framework Details Section -->
+    <section>
+        <div class="container">
+            <h2 class="section-title reveal">유연한 테스트 프레임워크</h2>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <h3>✅ 체계적인 시나리오 관리</h3>
+                    <p>
+                        TC ID, Pre-condition, Expected Result를 Google Sheet와 연동하여 관리합니다.
+                        카메라 촬영, 저장, 갤러리 연동 등 앱 핵심 기능을 검증하는 TC_CAM_01 ~ 07을 운영 중입니다.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <h3>✅ 환경 독립성</h3>
+                    <p>
+                        Windows, Mac, Linux 등 OS 제약 없이 실행 가능한 크로스 플랫폼 환경을 지원합니다.
+                        개발자의 로컬 환경이나 CI/CD 파이프라인 어디서든 동작합니다.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <h3>✅ 심층 데이터 분석</h3>
+                    <p>
+                        단순 Pass/Fail을 넘어, uiautomator2 타임아웃과 같은 인프라 이슈와 앱 크래시 같은 앱 이슈를 명확히 구분하여
+                        개발팀에 정확한 피드백을 제공합니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap">
+        <div class="container">
+            <h2 class="section-title reveal">단순 자동화를 넘어,<br>지능형 QA 시스템으로 진화합니다</h2>
+            <div class="roadmap-items">
+                <div class="roadmap-item reveal">
+                    <h3>📈 Phase 1: Coverage Expansion</h3>
+                    <ul>
+                        <li>특정 기능을 넘어 앱 전체의 기능으로 테스트 범위 확대</li>
+                        <li>한정된 테스트 케이스에서 무한한 확장</li>
+                        <li>다양한 사용자 시나리오를 커버하는 End-to-End 테스트 구축</li>
+                    </ul>
+                </div>
+                <div class="roadmap-item reveal">
+                    <h3>🚀 Phase 2: Scale-Up</h3>
+                    <ul>
+                        <li>단일 기기 테스트에서 다중 기기 병렬 실행(Device Farm) 환경 구축</li>
+                        <li>다양한 OS 환경에서 테스트 수행</li>
+                        <li>다양한 디바이스 모델과 OS 버전에서 동시 검증</li>
+                    </ul>
+                </div>
+                <div class="roadmap-item reveal">
+                    <h3>🔗 Phase 3: CI/CD Integration</h3>
+                    <ul>
+                        <li>GitHub Actions 연동을 통한 코드 배포 시 자동 테스트 트리거</li>
+                        <li>Pull Request마다 자동으로 회귀 테스트 수행</li>
+                        <li>배포 전 품질 게이트로 활용하여 프로덕션 안정성 강화</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-info">
+                <div class="footer-image-container">
+                    <img src="qnp_automation.jpg" alt="Q&People Software Test Automation Solution" class="footer-image" onerror="this.style.display='none';">
+                </div>
+                <div class="footer-text">
+                    <h2>Open Source QA Automation</h2>
+                    <p><strong>대표:</strong> 권혁민</p>
+                    <p><strong>Contact:</strong> 02-2055-3399</p>
+                    <p><strong>E-mail:</strong> scontact@qnpeople.com</p>
+                    <p><strong>사업자번호:</strong> 140-81-33109</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Q&People. All rights reserved. Built with Open Source Technologies.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top" id="scrollToTop"></div>
+
+    <!-- Enhanced JavaScript -->
+    <script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollProgress = document.getElementById('scrollProgress');
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.pageYOffset / scrollableHeight) * 100;
+            scrollProgress.style.width = scrolled + '%';
+        });
+
+        // Header Scroll Effect
+        const header = document.getElementById('header');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Scroll Reveal Animation
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 100;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', reveal);
+        reveal(); // Initial check
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll to Top Button
+        const scrollToTop = document.getElementById('scrollToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 500) {
+                scrollToTop.classList.add('visible');
+            } else {
+                scrollToTop.classList.remove('visible');
+            }
+        });
+
+        scrollToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Logo Image Error Handling
+        const logoImage = document.getElementById('logoImage');
+        const logoFallback = document.getElementById('logoFallback');
+
+        logoImage.addEventListener('load', function() {
+            this.style.display = 'block';
+            logoFallback.style.display = 'none';
+        });
+
+        // Try to load logo
+        setTimeout(() => {
+            logoImage.src = 'qnpeople_logo.png';
+        }, 100);
+
+        // Add stagger animation to feature cards
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+        });
+
+        // Add stagger animation to workflow steps
+        const workflowSteps = document.querySelectorAll('.workflow-step');
+        workflowSteps.forEach((step, index) => {
+            step.style.transitionDelay = `${index * 0.15}s`;
+        });
+
+        // Parallax effect for hero background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < hero.offsetHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
