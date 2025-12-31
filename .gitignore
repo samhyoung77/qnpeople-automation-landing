@@ -4,6 +4,7 @@
 *.swp
 *.swo
 *~
+.claude/
 
 # OS
 .DS_Store
@@ -19,3 +20,13 @@ Thumbs.db
 # Environment
 .env
 .env.local
+
+# Development files
+original_index.html
+index_claude.html
+index_gemini.html
+plan-template.md
+ssgdfs/
+
+# GitHub
+.github/

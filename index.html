@@ -901,6 +901,148 @@
             filter: drop-shadow(0 0 8px var(--teal-glow));
         }
 
+        /* Contact Form Section */
+        .contact-section {
+            background: var(--bg-secondary);
+            padding: 6rem 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-section h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--orange), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact-section .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group label .required {
+            color: var(--orange);
+            margin-left: 0.25rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.875rem 1.125rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px var(--orange-glow);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-submit {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 25px var(--orange-glow);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 35px var(--orange-glow);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .form-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .form-message.success {
+            background: rgba(20, 184, 166, 0.1);
+            border: 1px solid var(--teal);
+            color: var(--teal-light);
+        }
+
+        .form-message.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+        }
+
         /* Enhanced Footer */
         footer {
             background: var(--bg-primary);
@@ -1078,6 +1220,19 @@
             .footer-image {
                 max-width: 100%;
             }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .contact-form {
+                padding: 2rem 1.5rem;
+            }
+
+            .contact-section h2 {
+                font-size: 2rem;
+            }
         }
 
         /* Animations */
@@ -1197,10 +1352,6 @@
                 <a href="https://lookerstudio.google.com/reporting/e7857c86-ded6-46f7-91d7-417c3cb0c450" target="_blank" class="btn btn-secondary">
                     <span>📊</span>
                     <span>실시간 대시보드 보기</span>
-                </a>
-                <a href="mailto:shcho@qnpeople.com" class="btn btn-primary" style="background: linear-gradient(135deg, var(--teal), var(--teal-dark)); box-shadow: 0 4px 25px var(--teal-glow);">
-                    <span>✉️</span>
-                    <span>자동화 구축 문의하기</span>
                 </a>
             </div>
         </div>
@@ -1416,6 +1567,58 @@
         </div>
     </section>
 
+    <!-- Contact Form Section -->
+    <section class="contact-section">
+        <div class="contact-container">
+            <h2>문의하기</h2>
+            <p class="subtitle">자동화 구축에 대해 궁금하신 점이 있으시면 언제든지 문의해주세요.</p>
+
+            <form class="contact-form" id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">성함<span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required placeholder="홍길동">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">이메일<span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="example@company.com">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="company">회사명<span class="required">*</span></label>
+                        <input type="text" id="company" name="company" required placeholder="주식회사 예시">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">전화번호<span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required placeholder="010-1234-5678">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="position">직함</label>
+                        <input type="text" id="position" name="position" placeholder="예: QA 팀장, 개발 매니저">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="message">문의 내용<span class="required">*</span></label>
+                        <textarea id="message" name="message" required placeholder="자동화 구축에 대해 궁금하신 점을 자유롭게 작성해주세요."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-submit">
+                    <button type="submit" class="btn-submit">제출하기</button>
+                </div>
+
+                <div id="formMessage" class="form-message"></div>
+            </form>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer id="contact">
         <div class="footer-content">
@@ -1565,6 +1768,68 @@
             const hero = document.querySelector('.hero');
             if (hero && scrolled < hero.offsetHeight) {
                 hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Contact Form Submission
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.getElementById('formMessage');
+
+        // Google Apps Script Web App URL (will be updated after deployment)
+        const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitButton = contactForm.querySelector('.btn-submit');
+            const originalButtonText = submitButton.textContent;
+
+            // Disable button and show loading state
+            submitButton.disabled = true;
+            submitButton.textContent = '제출 중...';
+
+            // Hide previous messages
+            formMessage.style.display = 'none';
+            formMessage.className = 'form-message';
+
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                company: document.getElementById('company').value,
+                phone: document.getElementById('phone').value,
+                position: document.getElementById('position').value || '-',
+                message: document.getElementById('message').value,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                // Show success message
+                formMessage.textContent = '✅ 문의가 성공적으로 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.';
+                formMessage.className = 'form-message success';
+                formMessage.style.display = 'block';
+
+                // Reset form
+                contactForm.reset();
+
+            } catch (error) {
+                console.error('Form submission error:', error);
+                formMessage.textContent = '❌ 문의 접수 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+                formMessage.className = 'form-message error';
+                formMessage.style.display = 'block';
+            } finally {
+                // Re-enable button
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
             }
         });
     </script>
