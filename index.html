@@ -1111,7 +1111,7 @@
         .scroll-to-top {
             position: fixed;
             bottom: 2rem;
-            left: 2rem;
+            right: 2rem;
             width: 50px;
             height: 50px;
             background: linear-gradient(135deg, var(--orange), var(--teal));
@@ -1869,11 +1869,13 @@
     height: 64px;
     border-radius: 20px;
     background: linear-gradient(135deg, var(--qnp-primary) 0%, var(--qnp-accent) 100%);
-    box-shadow: 
+    box-shadow:
       0 4px 24px var(--qnp-glow),
       0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
+    position: fixed !important;
+    bottom: 6.5rem !important;
+    right: 2rem !important;
     overflow: hidden;
   }
 
