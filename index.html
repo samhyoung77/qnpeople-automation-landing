@@ -1110,7 +1110,7 @@
         /* Scroll to Top Button */
         .scroll-to-top {
             position: fixed;
-            bottom: 8.625rem;
+            bottom: 6.75rem;
             right: 2rem;
             width: 56px;
             height: 56px;
@@ -1875,8 +1875,14 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: fixed !important;
     bottom: 2rem !important;
-    right: 2rem !important;
+    right: 2.3rem !important;
     overflow: hidden;
+  }
+
+  /* 챗봇 아이콘 크기 조정 */
+  .n8n-chat .chat-toggle svg,
+  .n8n-chat .chat-toggle img {
+    transform: scale(0.9);
   }
 
   .n8n-chat .chat-toggle::before {
