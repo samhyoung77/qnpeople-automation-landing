@@ -1,0 +1,382 @@
+{
+  "name": "Receipt_Analyzer_with_Drive",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cffdacc8-de1a-4873-8dbc-51845694f446",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "id": "webhook-node",
+      "name": "Webhook",
+      "webhookId": "cffdacc8-de1a-4873-8dbc-51845694f446"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body?.action }}",
+              "value2": "update"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [220, 0],
+      "id": "if-action-node",
+      "name": "Is Update?"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1mOXhWNtxFVtOIMPvfcK1cmmjK828PmHdRL1SXZfxuwo",
+          "mode": "list",
+          "cachedResultName": "Receipt scanner",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mOXhWNtxFVtOIMPvfcK1cmmjK828PmHdRL1SXZfxuwo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Receipts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mOXhWNtxFVtOIMPvfcK1cmmjK828PmHdRL1SXZfxuwo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.body.data.id }}",
+            "Image": "={{ $json.body.data.image }}",
+            "거래일": "={{ $json.body.data.거래일 }}",
+            "청구대상여부": "={{ $json.body.data.청구대상여부 }}",
+            "구분": "={{ $json.body.data.구분 }}",
+            "이용지점": "={{ $json.body.data.이용지점 }}",
+            "금액": "={{ $json.body.data.금액 }}",
+            "카드종류": "={{ $json.body.data.카드종류 }}",
+            "메모": "={{ $json.body.data.메모 }}",
+            "비고": "={{ $json.body.data.비고 }}",
+            "URL": "={{ $json.body.data.url }}"
+          },
+          "matchingColumns": ["ID"],
+          "schema": [
+            { "id": "ID", "displayName": "ID", "required": false, "defaultMatch": true, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "Image", "displayName": "Image", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "거래일", "displayName": "거래일", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "청구대상여부", "displayName": "청구대상여부", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "구분", "displayName": "구분", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "이용지점", "displayName": "이용지점", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "금액", "displayName": "금액", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "카드종류", "displayName": "카드종류", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "메모", "displayName": "메모", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "비고", "displayName": "비고", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "URL", "displayName": "URL", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [440, -120],
+      "id": "update-sheet-node",
+      "name": "Update Receipt Row",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "4lPJMISve4KuXu6M",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": true, \"message\": \"영수증이 업데이트되었습니다\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [660, -120],
+      "id": "respond-update-node",
+      "name": "Respond Update Success"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "전문가로서 영수증 이미지를 분석하여 다음 정보를 추출하십시오.\n결과는 반드시 마크다운(```json) 태그 없이 순수한 JSON 형식으로만 출력해야 합니다.\n\n[추출 항목 및 규칙]\n1. vendor: 이용지점 또는 가맹점명 (정확하게 표기)\n2. date: 거래일 (형식: YYYY-MM-DD)\n3. amount: 금액 (규칙: '원', '₩', ',' 콤마를 모두 제거하고 숫자만 추출)\n4. category: 아래 [분류 기준]에 따라 가장 적절한 카테고리 하나를 선택\n\n[분류 기준]\n- 식대: 일반 식당, 음식점, 패스트푸드(SUBWAY 등), 횟집, 분식, 스타벅스(Starbucks) 등\n- 커피이용: 커피빈, 투썸플레이스, 이디야 등 기타 카페\n- 숙박비: 호텔, 모텔, 펜션, 리조트, 야놀자 등\n- 주차료: 주차장, 하이파킹, 카카오주차 등\n- 충전료: 주유소, LPG충전소, 전기차충전소\n- 교통비: 택시, 버스, 지하철, 기차, 티머니\n- 톨게이트비용: 톨게이트, 하이패스, 한국도로공사\n\n[예외 처리]\n- 위 카테고리에 명확히 속하지 않는 경우 \"기타\"로 분류하십시오.\n- 정보를 찾을 수 없는 항목은 null로 반환하십시오.\n\n[출력 예시]\n{\n  \"vendor\": \"스타벅스 강남점\",\n  \"date\": \"2026-01-09\",\n  \"amount\": \"12500\",\n  \"category\": \"식대\"\n}"
+            },
+            {
+              "type": "image",
+              "imageType": "base64",
+              "binaryPropertyName": "image"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [440, 120],
+      "id": "openai-node",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "5T1UK4OxByMwYJP4",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// OpenAI 응답에서 JSON 파싱\nconst aiResponse = $input.item.json.output[0].content[0].text;\nconst parsedData = JSON.parse(aiResponse);\n\n// 고유 ID 생성 (8자리 랜덤 hex)\nconst generateId = () => {\n  return Math.random().toString(36).substring(2, 10);\n};\n\n// 타임스탬프 생성\nconst timestamp = Date.now().toString().substring(5); // 뒤 6자리\n\n// ID 생성\nconst receiptId = generateId();\nconst fileName = `${receiptId}.Image.${timestamp}.jpg`;\n\n// Webhook에서 받은 binary 이미지 데이터 가져오기\nconst binaryImage = $('Webhook').item.binary.image;\n\n// Google Sheets 형식으로 변환 + binary 데이터 전달\nreturn {\n  json: {\n    receiptId: receiptId,\n    fileName: fileName,\n    이용지점: parsedData.vendor || '',\n    거래일: parsedData.date || '',\n    금액: parsedData.amount || '',\n    구분: parsedData.category || '',\n    vendor: parsedData.vendor || '',\n    date: parsedData.date || '',\n    amount: parsedData.amount || '',\n    category: parsedData.category || ''\n  },\n  binary: {\n    image: binaryImage\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 120],
+      "id": "parse-response-node",
+      "name": "Parse AI Response"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "binaryData": true,
+        "binaryPropertyName": "image",
+        "name": "={{ $json.fileName }}",
+        "resolveData": true,
+        "parents": {
+          "values": [
+            {
+              "folderName": {
+                "__rl": true,
+                "value": "name:Receipt Images",
+                "mode": "list"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [960, 120],
+      "id": "google-drive-node",
+      "name": "Upload to Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YOUR_GOOGLE_DRIVE_CREDENTIAL_ID",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Google Drive 업로드 결과에서 정보 추출\nconst driveFile = $input.item.json;\nconst fileName = $('Parse AI Response').item.json.fileName;\nconst receiptId = $('Parse AI Response').item.json.receiptId;\n\n// Webhook에서 받은 카드종류와 청구대상여부\nconst webhookData = $('Webhook').item.json.body || {};\nconst cardType = webhookData.cardType || '';\nconst billable = webhookData.billable || '';\n\n// Google Drive 파일 ID\nconst fileId = driveFile.id;\n\n// Google Drive 직접 이미지 링크 (공개 설정 필요)\nconst imageUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;\n\n// Google Drive 파일 보기 URL\nconst driveUrl = `https://drive.google.com/file/d/${fileId}/view`;\n\n// 이전 단계의 데이터와 병합\nreturn {\n  json: {\n    ID: receiptId,\n    Image: imageUrl,\n    거래일: $('Parse AI Response').item.json.거래일,\n    청구대상여부: billable,\n    구분: $('Parse AI Response').item.json.구분,\n    이용지점: $('Parse AI Response').item.json.이용지점,\n    금액: $('Parse AI Response').item.json.금액,\n    카드종류: cardType,\n    메모: '',\n    비고: '',\n    URL: driveUrl\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1220, 120],
+      "id": "prepare-sheet-data-node",
+      "name": "Prepare Sheet Data"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1mOXhWNtxFVtOIMPvfcK1cmmjK828PmHdRL1SXZfxuwo",
+          "mode": "list",
+          "cachedResultName": "Receipt scanner",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mOXhWNtxFVtOIMPvfcK1cmmjK828PmHdRL1SXZfxuwo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Receipts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mOXhWNtxFVtOIMPvfcK1cmmjK828PmHdRL1SXZfxuwo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.ID }}",
+            "Image": "={{ $json.Image }}",
+            "거래일": "={{ $json.거래일 }}",
+            "청구대상여부": "={{ $json.청구대상여부 }}",
+            "구분": "={{ $json.구분 }}",
+            "이용지점": "={{ $json.이용지점 }}",
+            "금액": "={{ $json.금액 }}",
+            "카드종류": "={{ $json.카드종류 }}",
+            "메모": "={{ $json.메모 }}",
+            "비고": "={{ $json.비고 }}",
+            "URL": "={{ $json.URL }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "ID", "displayName": "ID", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "Image", "displayName": "Image", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "거래일", "displayName": "거래일", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "청구대상여부", "displayName": "청구대상여부", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "구분", "displayName": "구분", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "이용지점", "displayName": "이용지점", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "금액", "displayName": "금액", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "카드종류", "displayName": "카드종류", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "메모", "displayName": "메모", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "비고", "displayName": "비고", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "URL", "displayName": "URL", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1480, 120],
+      "id": "google-sheets-node",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "4lPJMISve4KuXu6M",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"message\": \"영수증이 분석되고 저장되었습니다\",\n  \"success\": true,\n  \"data\": {\n    \"vendor\": $('Parse AI Response').item.json.vendor,\n    \"date\": $('Parse AI Response').item.json.date,\n    \"amount\": $('Parse AI Response').item.json.amount,\n    \"category\": $('Parse AI Response').item.json.category,\n    \"이용지점\": $('Parse AI Response').item.json.이용지점,\n    \"거래일\": $('Parse AI Response').item.json.거래일,\n    \"금액\": $('Parse AI Response').item.json.금액,\n    \"구분\": $('Parse AI Response').item.json.구분,\n    \"image\": $('Webhook').item.json.body.imageBase64\n  }\n} }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [1740, 120],
+      "id": "respond-node",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Is Update?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Update?": {
+      "main": [
+        [
+          {
+            "node": "Update Receipt Row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Receipt Row": {
+      "main": [
+        [
+          {
+            "node": "Respond Update Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Parse AI Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Response": {
+      "main": [
+        [
+          {
+            "node": "Upload to Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Prepare Sheet Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Sheet Data": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "with-drive-and-update-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "id": "ReceiptAnalyzerWithDrive",
+  "tags": []
+}

@@ -1,0 +1,15 @@
+# 안드로이드 빌드 관련 (절대 올리면 안 됨)
+/android/build/
+/android/app/build/
+/android/.gradle/
+
+# 개인 보안 파일 (키값, 경로 등)
+local.properties
+*.jks
+*.keystore
+
+# 기타 시스템 파일
+.DS_Store
+Thumbs.db
+node_modules/
+.idea/
